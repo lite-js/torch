@@ -1,10 +1,13 @@
 const mocha = require('mocha')
 const {
+  ipcRenderer
+} = require('electron')
+const {
   each
 } = require('lodash')
 const {
-  ipcRenderer
-} = require('electron')
+  extname
+} = require('path')
 const Coverage = require('../lib/Coverage')
 const notify = require('../lib/notify')
 const runMocha = require('../lib/runMocha')
@@ -49,11 +52,19 @@ if (opts.compile) {
 }
 
 try {
-  each(opts.preload, script => {
-    const tag = document.createElement('script')
-    tag.src = script
-    tag.async = false
-    document.head.appendChild(tag)
+  each(opts.preload, file => {
+    const ext = extname(file)
+    if (ext === '.js') {
+      const tag = document.createElement('script')
+      tag.src = file
+      tag.async = false
+      document.head.appendChild(tag)
+    } else if (ext === '.css') {
+      const tag = document.createElement('link')
+      tag.rel = 'stylesheet'
+      tag.href = file
+      document.head.appendChild(tag)
+    }
   })
 } catch (error) {
   reportError(error)
