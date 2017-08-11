@@ -1,6 +1,6 @@
 {
   "name": "@lite-js/torch",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "test framework to light up the world",
   "main": "index.js",
   "bin": {
